@@ -6,7 +6,8 @@ node_js:
 deploy:
 provider: pages
 skip-cleanup: true
-github-token: $3ed4508993e4561f6704bc5cc449de9be0ebfd5e
+github-token: $GITHUB_TOKEN
 keep-history: true
 on:
   branch: master
+local-dir:dist
