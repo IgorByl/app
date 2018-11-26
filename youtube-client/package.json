@@ -7,7 +7,6 @@
     "dev": "webpack --watch",
     "build": "webpack",
     "lint": "eslint ./index.js"
-    // "test": "mocha ./test.js"
   },
   "author": "Ihar Bylatu <i.bylatu@mail.ru>",
   "license": "ISC",
