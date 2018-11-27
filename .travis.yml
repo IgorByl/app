@@ -3,13 +3,13 @@ node_js:
   - "iojs"
   - "7"
 script: 
-  - npm run test
+  - npm build
+  - npm test
 deploy:
-provider: pages
-local_dir: "./build"
-skip-cleanup: true
-github-token: $3ed4508993e4561f6704bc5cc449de9be0ebfd5e
-keep-history: true
-on:
-  branch: master
+  provider: pages
+  skip-cleanup: true
+  github-token: $3ed4508993e4561f6704bc5cc449de9be0ebfd5e
+  keep-history: true
+  on:
+    branch: master
   
