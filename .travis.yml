@@ -5,7 +5,6 @@ node_js:
 
 deploy:
 provider: pages
-local_dir: "./build"
 skip-cleanup: true
 github-token: $3ed4508993e4561f6704bc5cc449de9be0ebfd5e
 keep-history: true
