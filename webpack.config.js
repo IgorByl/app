@@ -41,7 +41,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('bundle.css'),
     new CopyWebpackPlugin([{
-      from: './src/*.html',
+      from: './*.html',
     }]),
   ],
 };
