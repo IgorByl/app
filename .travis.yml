@@ -1,9 +1,7 @@
 language: node_js
 node_js:
-  - stable
- 
-  script: 
-  - npm run build 
+  - "iojs"
+  - "7"
 
 deploy:
 provider: pages

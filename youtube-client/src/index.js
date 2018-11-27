@@ -3,6 +3,9 @@
 import './style/main.css';
 import './style/reset.css';
 import obj from './js/values';
+import pows from '../test/pow';
+
+console.log(pows());
 
 let {
   q, token, database, number, index, numberSidesOnDisplay, check, flag, flag2,
