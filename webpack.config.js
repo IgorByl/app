@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: './bundle.js',
   },
   resolve: {
     extensions: ['.js'],
@@ -39,7 +39,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new ExtractTextPlugin('bundle.css'),
+    new ExtractTextPlugin('./bundle.css'),
     new CopyWebpackPlugin([{
       from: './*.html',
     }]),
