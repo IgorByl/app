@@ -5,8 +5,8 @@ script:
   - npm run build
 deploy:
   provider: pages
-  local_dir: dist
-  skip-cleanup: false
+  skip-cleanup: true
   github-token: $GITHUB_PAGES
+  keep-history: true
   on:
     branch: master
