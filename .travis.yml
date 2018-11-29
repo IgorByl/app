@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
-script: 
+  - stable
+script:
   - npm run build
 deploy:
   provider: pages
@@ -12,4 +11,3 @@ deploy:
   keep-history: true
   on:
     branch: master
-  
