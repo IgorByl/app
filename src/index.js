@@ -1,5 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-loop-func */
 import './style/main.css';
 import './style/reset.css';
 import obj from './js/values';
@@ -10,6 +8,22 @@ console.log(pows());
 let {
   q, token, database, number, index, numberSidesOnDisplay, check, flag, flag2,
 } = obj;
+
+function debounceSerie(func, interval, immediate) {
+  let timer;
+  return () => {
+    const context = this;
+    const args = [func, interval, immediate];
+    const later = () => {
+      timer = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timer;
+    clearTimeout(timer);
+    timer = setTimeout(later, interval);
+    if (callNow) func.apply(context, args);
+  };
+}
 
 const main = document.createElement('main');
 document.body.appendChild(main);
@@ -59,7 +73,6 @@ const drawNav = () => {
 
 const drawArticle = () => {
   section.innerHTML = '';
-  let views;
   if (window.innerWidth >= 1201) {
     numberSidesOnDisplay = 4;
   }
@@ -114,7 +127,8 @@ const drawArticle = () => {
       divDate.appendChild(pDate);
 
       const { publishedAt } = database.items[i].snippet;
-      pDate.textContent = publishedAt.split('T')[0];
+      const [publisheData] = publishedAt.split('T');
+      pDate.textContent = publisheData;
       pDate.classList.add('by-line');
 
       const divViews = document.createElement('div');
@@ -129,8 +143,7 @@ const drawArticle = () => {
       fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA3f3zqPSweU2j72W6MjtCWPDNzaaFYI2s&id=${database.items[i].id.videoId}&part=snippet,statistics`)
         .then(data => data.json())
         .then((data) => {
-          views = data;
-          pViews.textContent = views.items[0].statistics.viewCount;
+          pViews.textContent = data.items[0].statistics.viewCount;
         });
       pViews.classList.add('by-line');
       const pDescription = document.createElement('p');
@@ -200,28 +213,41 @@ ul.addEventListener('click', (e) => {
   }
 });
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth >= 320 && window.innerWidth <= 700) {
-    switch (index) {
-      case 0: break;
-      case 1: break;
-      case 2: index += 1; break;
-      case 3: index *= 2; index -= 1; break;
-      default: index *= 2; index -= 1; break;
+function recountTooltipNumber() {
+  if (q) {
+    if (window.innerWidth >= 320 && window.innerWidth <= 700) {
+      switch (index) {
+        case 0: break;
+        case 1: break;
+        case 2: index += 1; break;
+        case 3: index *= 2; index -= 1; break;
+        default: index *= 2; index -= 1; break;
+      }
+      numberSidesOnDisplay = 1;
     }
-    numberSidesOnDisplay = 1;
-  }
-  if (window.innerWidth >= 701 && window.innerWidth <= 1200) {
-    switch (index) {
-      case 0: break;
-      case 1: index = 0; break;
-      case 2: index = 1; break;
-      case 3: index = Math.floor(index /= 2); index += 1; break;
-      default: index = Math.floor(index /= 2); index -= 1; break;
+    if (window.innerWidth >= 701 && window.innerWidth <= 1200) {
+      switch (index) {
+        case 0: break;
+        case 1: index = 0; break;
+        case 2: index = 1; break;
+        case 3: index = Math.floor(index /= 2); index += 1; break;
+        default: index = Math.floor(index /= 2); index -= 1; break;
+      }
+      numberSidesOnDisplay = 2;
     }
-    numberSidesOnDisplay = 2;
+    if (window.innerWidth >= 1201) {
+      switch (index) {
+        case 0:
+        case 1:
+        case 2: index = 0; break;
+        case 3: index = 1; break;
+        default: index = Math.floor(index /= 2); index -= 1; break;
+      }
+      numberSidesOnDisplay = 4;
+    }
+    number = index * numberSidesOnDisplay;
+    requestAnimationFrame(drawArticle);
+    requestAnimationFrame(drawNav);
   }
-  number = index * numberSidesOnDisplay;
-  drawArticle();
-  drawNav();
-});
+}
+window.addEventListener('resize', debounceSerie(recountTooltipNumber, 150, false));
